@@ -79,3 +79,22 @@ export const eliminarEstacionamiento = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar el estacionamiento', error: error.message });
   }
 };
+
+export const obtenerEstacionamientosPorPropietario = async (req, res) => {
+  try {
+    const { propietario_id } = req.params;
+    const estacionamientos = await Estacionamiento.findAll({
+      where: {
+        propietario_id
+      }
+    });
+
+    if (estacionamientos.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron estacionamientos para este propietario' });
+    }
+
+    res.status(200).json(estacionamientos);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los estacionamientos del propietario', error: error.message });
+  }
+};
