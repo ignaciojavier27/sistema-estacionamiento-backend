@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 import cors from 'cors';
 import { config }  from 'dotenv';
-import { sequelize, connectDB } from './config/database.js';
+import { connectDB } from './config/database.js';
 import { syncModels } from './config/syncModel.js';
 import usuarioRoutes from './routes/usuarioRouter.js';
 import estacionamientoRoutes from './routes/estacionamientoRouter.js';
