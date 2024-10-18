@@ -2,7 +2,7 @@ import Estacionamiento from '../models/Estacionamiento.js';
 
 export const crearEstacionamiento = async (req, res) => {
   try {
-    const { nombre, direccion, capacidad, precio_por_minuto, horario_disponible, propietario_id } = req.body;
+    const { nombre, direccion, precio_por_minuto, horario_disponible, propietario_id, capacidad } = req.body;
 
     const propietario = await Usuario.findByPk(propietario_id);
     if (!propietario) {
@@ -12,10 +12,10 @@ export const crearEstacionamiento = async (req, res) => {
     const nuevoEstacionamiento = await Estacionamiento.create({
       nombre,
       direccion,
-      capacidad, 
       precio_por_minuto,
       horario_disponible,
-      propietario_id
+      propietario_id,
+      capacidad
     });
 
     for (let i = 1; i <= capacidad; i++) {
@@ -60,7 +60,7 @@ export const obtenerEstacionamientoPorId = async (req, res) => {
 export const actualizarEstacionamiento = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, direccion, capacidad_total, precio_por_minuto, horario_disponible, propietario_id } = req.body;
+    const { nombre, direccion, precio_por_minuto, horario_disponible, propietario_id, capacidad } = req.body;
     const estacionamiento = await Estacionamiento.findByPk(id);
     if (!estacionamiento) {
       return res.status(404).json({ message: 'Estacionamiento no encontrado' });
@@ -68,10 +68,10 @@ export const actualizarEstacionamiento = async (req, res) => {
 
     estacionamiento.nombre = nombre;
     estacionamiento.direccion = direccion;
-    estacionamiento.capacidad_total = capacidad_total;
     estacionamiento.precio_por_minuto = precio_por_minuto;
     estacionamiento.horario_disponible = horario_disponible;
     estacionamiento.propietario_id = propietario_id;
+    estacionamiento.capacidad = capacidad;
 
     await estacionamiento.save();
     res.status(200).json(estacionamiento);
