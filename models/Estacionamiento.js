@@ -16,10 +16,6 @@ const Estacionamiento = sequelize.define('Estacionamiento', {
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  capacidad_total: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
   precio_por_minuto: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -35,12 +31,15 @@ const Estacionamiento = sequelize.define('Estacionamiento', {
       model: Usuario, 
       key: 'usuario_id'
     }
+  },
+  capacidad: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 }, {
   tableName: 'Estacionamiento',
   timestamps: false
 });
-
 
 Usuario.hasMany(Estacionamiento, { foreignKey: 'propietario_id' });
 Estacionamiento.belongsTo(Usuario, { foreignKey: 'propietario_id' });

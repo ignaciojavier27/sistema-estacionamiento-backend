@@ -9,6 +9,7 @@ const Espacio = sequelize.define('Espacio', {
   },
   estacionamiento_id: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
       model: 'Estacionamiento',
       key: 'estacionamiento_id',
@@ -19,8 +20,9 @@ const Espacio = sequelize.define('Espacio', {
     allowNull: false,
   },
   estado: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   },
 }, {
   timestamps: false,

@@ -2,15 +2,30 @@ import Estacionamiento from '../models/Estacionamiento.js';
 
 export const crearEstacionamiento = async (req, res) => {
   try {
-    const { nombre, direccion, capacidad_total, precio_por_minuto, horario_disponible, propietario_id } = req.body;
+    const { nombre, direccion, capacidad, precio_por_minuto, horario_disponible, propietario_id } = req.body;
+
+    const propietario = await Usuario.findByPk(propietario_id);
+    if (!propietario) {
+      return res.status(404).json({ message: 'Propietario no encontrado' });
+    }
+
     const nuevoEstacionamiento = await Estacionamiento.create({
       nombre,
       direccion,
-      capacidad_total,
+      capacidad, 
       precio_por_minuto,
       horario_disponible,
       propietario_id
     });
+
+    for (let i = 1; i <= capacidad; i++) {
+      await Espacio.create({
+        numero_espacio: i,
+        estado: 0,
+        estacionamiento_id: nuevoEstacionamiento.estacionamiento_id
+      });
+    }
+
     res.status(201).json(nuevoEstacionamiento);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el estacionamiento', error: error.message });
