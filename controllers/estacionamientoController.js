@@ -1,4 +1,5 @@
 import Estacionamiento from '../models/Estacionamiento.js';
+import Usuario from '../models/Usuario.js';
 
 export const crearEstacionamiento = async (req, res) => {
   try {
@@ -17,14 +18,6 @@ export const crearEstacionamiento = async (req, res) => {
       propietario_id,
       capacidad
     });
-
-    for (let i = 1; i <= capacidad; i++) {
-      await Espacio.create({
-        numero_espacio: i,
-        estado: 0,
-        estacionamiento_id: nuevoEstacionamiento.estacionamiento_id
-      });
-    }
 
     res.status(201).json(nuevoEstacionamiento);
   } catch (error) {
