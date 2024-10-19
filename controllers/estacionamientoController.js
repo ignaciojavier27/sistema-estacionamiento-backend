@@ -1,5 +1,6 @@
 import Estacionamiento from '../models/Estacionamiento.js';
 import Usuario from '../models/Usuario.js';
+import Espacio from '../models/Espacio.js';
 
 export const crearEstacionamiento = async (req, res) => {
   try {
@@ -19,9 +20,26 @@ export const crearEstacionamiento = async (req, res) => {
       capacidad
     });
 
-    res.status(201).json(nuevoEstacionamiento);
+    const espacios = [];
+    for (let i = 1; i <= capacidad; i++) {
+      espacios.push({
+        estacionamiento_id: nuevoEstacionamiento.estacionamiento_id,
+        numero_espacio: i,
+        estado: 0
+      });
+    }
+
+    await Espacio.bulkCreate(espacios);
+
+    res.status(201).json({
+      message: 'Estacionamiento y espacios creados exitosamente',
+      estacionamiento: nuevoEstacionamiento,
+      espaciosCreados: capacidad
+    });
+
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear el estacionamiento', error: error.message });
+    console.error('Error al crear el estacionamiento y los espacios:', error);
+    res.status(500).json({ message: 'Error al crear el estacionamiento y los espacios', error: error.message });
   }
 };
 
