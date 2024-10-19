@@ -99,10 +99,15 @@ export const eliminarEstacionamiento = async (req, res) => {
       return res.status(404).json({ message: 'Estacionamiento no encontrado' });
     }
 
+    await Espacio.destroy({
+      where: { estacionamiento_id: id }
+    });
+
     await estacionamiento.destroy();
-    res.status(200).json({ message: 'Estacionamiento eliminado correctamente' });
+
+    res.status(200).json({ message: 'Estacionamiento y sus espacios eliminados correctamente' });
   } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar el estacionamiento', error: error.message });
+    res.status(500).json({ message: 'Error al eliminar el estacionamiento y sus espacios', error: error.message });
   }
 };
 
