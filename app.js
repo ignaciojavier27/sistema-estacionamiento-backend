@@ -6,6 +6,8 @@ import { syncModels } from './config/syncModel.js';
 import usuarioRoutes from './routes/usuarioRouter.js';
 import estacionamientoRoutes from './routes/estacionamientoRouter.js';
 import authRoutes from './routes/authRouter.js';
+import espacioRoutes from './routes/espacioRouter.js';
+
 
 
 config();
@@ -22,6 +24,7 @@ syncModels();
 app.use('/api', usuarioRoutes);
 app.use('/api', estacionamientoRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api', espacioRoutes);
 
 
 app.listen(port, () => {
