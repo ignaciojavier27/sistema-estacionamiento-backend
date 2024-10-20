@@ -1,5 +1,5 @@
 import express from 'express';
-import { obtenerEspacios, obtenerEspacioPorId, obtenerEspaciosPorPropietario } from '../controllers/espacioController';
+import { obtenerEspacios, obtenerEspacioPorId, obtenerEspaciosPorPropietario } from '../controllers/espacioController.js';
 
 const router = express.Router();
 

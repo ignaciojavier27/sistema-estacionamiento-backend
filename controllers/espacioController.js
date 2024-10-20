@@ -1,7 +1,7 @@
 import Espacio from '../models/Espacio.js';
 import Estacionamiento from '../models/Estacionamiento.js';
 
-// Obtener todos los espacios
+
 export const obtenerEspacios = async (req, res) => {
   try {
     const espacios = await Espacio.findAll();
