@@ -6,4 +6,6 @@ const router = express.Router();
 router.post('/ingresoVehiculo', registrarIngresoVehiculo);
 router.post('/ingresoVehiculo', obtenerIngresoVehiculos);
 
+export default router;
+
 
