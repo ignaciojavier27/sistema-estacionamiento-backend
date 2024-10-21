@@ -1,3 +1,5 @@
+import Espacio from '../models/Espacio.js';
+import IngresoVehiculo from '../models/IngresoVehiculo.js';
 export const registrarIngresoVehiculo = async (req, res) => {
     try {
       const { espacio_id, patente } = req.body;
@@ -18,5 +20,14 @@ export const registrarIngresoVehiculo = async (req, res) => {
       res.status(200).json({ message: 'Vehículo ingresado correctamente', ingreso });
     } catch (error) {
       res.status(500).json({ message: 'Error al registrar el ingreso', error: error.message });
+    }
+};
+
+export const obtenerIngresoVehiculos = async (req, res) => {
+    try {
+      const ingresos = await IngresoVehiculo.findAll();
+      res.status(200).json(ingresos);
+    } catch (error) {
+      res.status(500).json({ message: 'Error al obtener los ingresos', error: error.message });
     }
 };
