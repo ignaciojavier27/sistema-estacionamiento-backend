@@ -8,6 +8,7 @@ import estacionamientoRoutes from './routes/estacionamientoRouter.js';
 import authRoutes from './routes/authRouter.js';
 import espacioRoutes from './routes/espacioRouter.js';
 import ingresoVehiculoRoutes from './routes/ingresoVehiculoRouter.js';
+import salidaVehiculoRoutes from './routes/salidaVehiculoRouter.js';
 
 
 
@@ -27,6 +28,7 @@ app.use('/api', estacionamientoRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api', espacioRoutes);
 app.use('/api', ingresoVehiculoRoutes)
+app.use('/api', salidaVehiculoRoutes)
 
 
 app.listen(port, () => {
