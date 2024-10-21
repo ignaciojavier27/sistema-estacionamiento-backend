@@ -4,7 +4,7 @@ import { registrarIngresoVehiculo, obtenerIngresoVehiculos } from '../controller
 const router = express.Router();
 
 router.post('/ingresoVehiculo', registrarIngresoVehiculo);
-router.post('/ingresoVehiculo', obtenerIngresoVehiculos);
+router.get('/ingresoVehiculo', obtenerIngresoVehiculos);
 
 export default router;
 
