@@ -1,5 +1,5 @@
 import express from 'express';
-import { registrarSalidaVehiculo, obtenerSalidasVehiculos } from '../controllers/salidaVehiculoController';
+import { registrarSalidaVehiculo, obtenerSalidasVehiculos } from '../controllers/salidaVehiculoController.js';
 
 const router = express.Router();
 
