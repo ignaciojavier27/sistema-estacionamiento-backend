@@ -1,11 +1,12 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
 import Espacio from './Espacio.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const IngresoVehiculo = sequelize.define('IngresoVehiculo', {
   ingreso_id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
   patente: {
@@ -28,7 +29,6 @@ const IngresoVehiculo = sequelize.define('IngresoVehiculo', {
   timestamps: false,
   tableName: 'IngresoVehiculo',
 });
-
 
 IngresoVehiculo.belongsTo(Espacio, { foreignKey: 'espacio_id' });
 
