@@ -44,3 +44,20 @@ export const obtenerEspaciosPorPropietario = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener los espacios del propietario', error: error.message });
   }
 };
+
+export const obtenerEspaciosPorEstacionamiento = async (req, res) => {
+  try {
+    const { estacionamiento_id } = req.params;
+    const espacios = await Espacio.findAll({
+      where: { estacionamiento_id }
+    });
+
+    if (espacios.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron espacios para este estacionamiento' });
+    }
+
+    res.status(200).json(espacios);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los espacios', error: error.message });
+  }
+};

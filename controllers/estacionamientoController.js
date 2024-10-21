@@ -72,11 +72,13 @@ export const actualizarEstacionamiento = async (req, res) => {
   try {
     const { id } = req.params;
     const { nombre, direccion, precio_por_minuto, horario_disponible, propietario_id, capacidad } = req.body;
+
     const estacionamiento = await Estacionamiento.findByPk(id);
     if (!estacionamiento) {
       return res.status(404).json({ message: 'Estacionamiento no encontrado' });
     }
 
+    const capacidadAnterior = estacionamiento.capacidad;
     estacionamiento.nombre = nombre;
     estacionamiento.direccion = direccion;
     estacionamiento.precio_por_minuto = precio_por_minuto;
@@ -84,7 +86,38 @@ export const actualizarEstacionamiento = async (req, res) => {
     estacionamiento.propietario_id = propietario_id;
     estacionamiento.capacidad = capacidad;
 
+
     await estacionamiento.save();
+
+    if (capacidad !== capacidadAnterior) {
+      const espaciosExistentes = await Espacio.count({
+        where: { estacionamiento_id: id }
+      });
+
+      if (capacidad > espaciosExistentes) {
+        const nuevosEspacios = capacidad - espaciosExistentes;
+        for (let i = 0; i < nuevosEspacios; i++) {
+          await Espacio.create({
+            estacionamiento_id: id,
+            numero_espacio: `Espacio-${espaciosExistentes + i + 1}`,
+            estado: 0
+          });
+        }
+      } 
+      else if (capacidad < espaciosExistentes) {
+        const espaciosExcedentes = espaciosExistentes - capacidad;
+        const espaciosAEliminar = await Espacio.findAll({
+          where: { estacionamiento_id: id },
+          order: [['espacio_id', 'DESC']],
+          limit: espaciosExcedentes
+        });
+
+        for (const espacio of espaciosAEliminar) {
+          await espacio.destroy();
+        }
+      }
+    }
+
     res.status(200).json(estacionamiento);
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar el estacionamiento', error: error.message });
