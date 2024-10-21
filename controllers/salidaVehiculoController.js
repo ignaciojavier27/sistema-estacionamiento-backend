@@ -19,7 +19,7 @@ export const registrarSalidaVehiculo = async (req, res) => {
     const horaSalida = new Date();
     const tiempoEstacionado = (horaSalida - horaIngreso) / (1000 * 60 * 60);
 
-    const tarifaPorHora = estacionamiento.precio_por_minuto;
+    const tarifaPorHora = estacionamiento.precio_por_minuto * 60;
     const totalAPagar = Math.max(tiempoEstacionado * tarifaPorHora, 0).toFixed(2);
 
     const recibo = `Patente: ${ingreso.patente}\nIngreso: ${horaIngreso.toLocaleString()}\nSalida: ${horaSalida.toLocaleString()}\nTotal a Pagar: $${totalAPagar}`;
