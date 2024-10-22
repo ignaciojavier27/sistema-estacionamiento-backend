@@ -61,15 +61,22 @@ export const obtenerSalidasVehiculos = async (req, res) => {
 
 export const obtenerSalidasVehiculosPorEstacionamiento = async (req, res) => {
   const { estacionamiento_id } = req.params;
+  
   try {
     const salidas = await SalidaVehiculo.findAll({
       include: {
         model: IngresoVehiculo,
-        where: { estacionamiento_id }
+        include: {
+          model: Espacio,
+          where: { estacionamiento_id }
+        }
       }
     });
+
     res.json(salidas);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error al obtener las salidas de vehículos' });
   }
-}
+};
+
