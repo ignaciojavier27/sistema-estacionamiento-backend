@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
-import Espacio from './Espacio.js';
 
 const IngresoVehiculo = sequelize.define('IngresoVehiculo', {
   ingreso_id: {
@@ -15,10 +14,6 @@ const IngresoVehiculo = sequelize.define('IngresoVehiculo', {
   espacio_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: Espacio, 
-      key: 'espacio_id',
-    },
   },
   hora_ingreso: {
     type: DataTypes.DATE,
@@ -28,8 +23,5 @@ const IngresoVehiculo = sequelize.define('IngresoVehiculo', {
   timestamps: false,
   tableName: 'IngresoVehiculo',
 });
-
-
-IngresoVehiculo.belongsTo(Espacio, { foreignKey: 'espacio_id' });
 
 export default IngresoVehiculo;
