@@ -24,6 +24,20 @@ const Espacio = sequelize.define('Espacio', {
     allowNull: false,
     defaultValue: 0,
   },
+  ingreso_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'IngresoVehiculo',
+      key: 'ingreso_id',
+    },
+    comment: 'Referencia al ingreso de vehículo si el espacio está ocupado',
+  },
+  patente: {
+    type: DataTypes.STRING(10),
+    allowNull: true,
+    comment: 'Patente del vehículo asociado al espacio',
+  }
 }, {
   timestamps: false,
   tableName: 'Espacio',

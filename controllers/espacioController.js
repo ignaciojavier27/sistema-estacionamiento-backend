@@ -1,20 +1,33 @@
 import Espacio from '../models/Espacio.js';
 import Estacionamiento from '../models/Estacionamiento.js';
+import IngresoVehiculo from '../models/IngresoVehiculo.js';
 
-
+// Obtener todos los espacios
 export const obtenerEspacios = async (req, res) => {
   try {
-    const espacios = await Espacio.findAll();
+    const espacios = await Espacio.findAll({
+      include: [{
+        model: IngresoVehiculo,
+        attributes: ['ingreso_id', 'patente'],
+      }]
+    });
     res.status(200).json(espacios);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los espacios', error: error.message });
   }
 };
 
+// Obtener un espacio por ID
 export const obtenerEspacioPorId = async (req, res) => {
   try {
     const { id } = req.params;
-    const espacio = await Espacio.findByPk(id); 
+    const espacio = await Espacio.findByPk(id, {
+      include: [{
+        model: IngresoVehiculo,
+        attributes: ['ingreso_id', 'patente'],
+      }]
+    }); 
+
     if (!espacio) {
       return res.status(404).json({ message: 'Espacio no encontrado' });
     }
@@ -24,13 +37,20 @@ export const obtenerEspacioPorId = async (req, res) => {
   }
 };
 
+// Obtener espacios por propietario
 export const obtenerEspaciosPorPropietario = async (req, res) => {
   try {
     const { propietario_id } = req.params;
 
     const estacionamientos = await Estacionamiento.findAll({
       where: { propietario_id },
-      include: [{ model: Espacio }]
+      include: [{ 
+        model: Espacio,
+        include: [{
+          model: IngresoVehiculo,
+          attributes: ['ingreso_id', 'patente'],
+        }],
+      }]
     });
 
     if (estacionamientos.length === 0) {
@@ -45,11 +65,16 @@ export const obtenerEspaciosPorPropietario = async (req, res) => {
   }
 };
 
+// Obtener espacios por estacionamiento
 export const obtenerEspaciosPorEstacionamiento = async (req, res) => {
   try {
     const { estacionamiento_id } = req.params;
     const espacios = await Espacio.findAll({
-      where: { estacionamiento_id }
+      where: { estacionamiento_id },
+      include: [{
+        model: IngresoVehiculo,
+        attributes: ['ingreso_id', 'patente'],
+      }]
     });
 
     if (espacios.length === 0) {
