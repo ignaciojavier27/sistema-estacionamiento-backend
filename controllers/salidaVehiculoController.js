@@ -34,6 +34,8 @@ export const registrarSalidaVehiculo = async (req, res) => {
     const espacio = await Espacio.findByPk(ingreso.espacio_id);
     if (espacio) {
       espacio.estado = 0;
+      espacio.ingreso_id = null;
+      espacio.patente = null;
       await espacio.save();
     }
 
