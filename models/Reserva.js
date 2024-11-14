@@ -26,15 +26,12 @@ const Reserva = sequelize.define('Reserva', {
     allowNull: false,
   },
   hora_inicio: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  hora_fin: {
-    type: DataTypes.DATE,
+    type: DataTypes.TIME,
     allowNull: false,
   },
   estado: {
-    type: DataTypes.STRING(100),
+    type: DataTypes.ENUM('pendiente', 'aceptada', 'rechazada', 'cancelada'),
+    defaultValue: 'pendiente',
     allowNull: false,
   },
   propietario_id: {
@@ -43,6 +40,10 @@ const Reserva = sequelize.define('Reserva', {
       model: 'Usuario',
       key: 'usuario_id',
     },
+  },
+  margen_minutos: {
+    type: DataTypes.INTEGER,
+    defaultValue: 20,
   },
 }, {
   timestamps: false,
