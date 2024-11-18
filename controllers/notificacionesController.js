@@ -17,20 +17,18 @@ export const crearNotificacionUsuario = async (req, res) => {
     }
 };
 
-export const crearNotificacionPropietario = async (req, res) => {
-    try {
-      const { propietario_id, mensaje, tipo_notificacion } = req.body;
-  
-      const nuevaNotificacion = await NotificacionPropietario.create({
-        propietario_id,
-        mensaje,
-        tipo_notificacion,
-      });
-  
-      res.status(201).json({ success: true, data: nuevaNotificacion });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
+export const crearNotificacionPropietario = async ({ propietario_id, mensaje, tipo_notificacion }) => {
+  try {
+    const nuevaNotificacion = await NotificacionPropietario.create({
+      propietario_id,
+      mensaje,
+      tipo_notificacion,
+    });
+    return nuevaNotificacion; // Devuelve la notificación creada
+  } catch (error) {
+    console.error("Error al crear la notificación:", error);
+    throw new Error("No se pudo crear la notificación al propietario.");
+  }
 };
 
 

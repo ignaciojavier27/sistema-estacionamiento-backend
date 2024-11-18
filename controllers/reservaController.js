@@ -5,12 +5,11 @@ export const crearReserva = async (req, res) => {
   try {
     const { usuario_id, fecha_reserva, hora_inicio, propietario_id, patente } = req.body;
 
-    // Validar si la patente está vacía
     if (!patente || patente.trim() === '') {
       return res.status(400).json({ success: false, message: 'La patente del vehículo es requerida.' });
     }
 
-    // Crear la nueva reserva sin espacio_id
+    // Crear la nueva reserva
     const nuevaReserva = await Reserva.create({
       usuario_id,
       fecha_reserva,
@@ -19,31 +18,30 @@ export const crearReserva = async (req, res) => {
       propietario_id,
     });
 
-    // Crear notificación al propietario
+    // Crear la notificación al propietario
     try {
       await crearNotificacionPropietario({
-        body: {
-          propietario_id,
-          mensaje: `Nueva reserva recibida para el día ${fecha_reserva}.`,
-          tipo_notificacion: 'nueva_reserva',
-        },
+        propietario_id,
+        mensaje: `Nueva reserva recibida para el día ${fecha_reserva}.`,
+        tipo_notificacion: 'nueva_reserva',
       });
     } catch (error) {
-      console.error("Error al crear notificación al propietario:", error);
-      throw error;  // Vuelve a lanzar el error para manejarlo en el controlador principal
+      console.error("Error al crear la notificación:", error);
+      return res.status(201).json({
+        success: true,
+        data: nuevaReserva,
+        warning: "Reserva creada, pero no se pudo notificar al propietario.",
+      });
     }
 
-    if (res && typeof res.status === 'function') {
-      return res.status(201).json({ success: true, data: nuevaReserva });
-    } else {
-      console.error("Error: La respuesta 'res' no está definida.");
-      throw new Error("Error con la respuesta.");
-    }
+    // Responder éxito
+    return res.status(201).json({ success: true, data: nuevaReserva });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ success: false, error: error.message });
+    console.error("Error en crearReserva:", error);
+    return res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 export const actualizarEstadoReserva = async (req, res) => {
   try {
