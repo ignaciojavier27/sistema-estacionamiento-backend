@@ -10,6 +10,7 @@ import espacioRoutes from './routes/espacioRouter.js';
 import ingresoVehiculoRoutes from './routes/ingresoVehiculoRouter.js';
 import salidaVehiculoRoutes from './routes/salidaVehiculoRouter.js';
 import reservaRoutes from './routes/reservaRouter.js';
+import notificacionesRoutes from './routes/notificacionesRouter.js';
 
 
 
@@ -31,6 +32,7 @@ app.use('/api', espacioRoutes);
 app.use('/api', ingresoVehiculoRoutes)
 app.use('/api', salidaVehiculoRoutes)
 app.use('/api', reservaRoutes)
+app.use('/api', notificacionesRoutes)
 
 
 app.listen(port, () => {
