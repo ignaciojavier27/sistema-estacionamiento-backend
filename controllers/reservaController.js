@@ -20,13 +20,18 @@ export const crearReserva = async (req, res) => {
     });
 
     // Crear notificación al propietario
-    await crearNotificacionPropietario({
-      body: {
-        propietario_id,
-        mensaje: `Nueva reserva recibida para el día ${fecha_reserva}.`,
-        tipo_notificacion: 'nueva_reserva',
-      },
-    });
+    try {
+      await crearNotificacionPropietario({
+        body: {
+          propietario_id,
+          mensaje: `Nueva reserva recibida para el día ${fecha_reserva}.`,
+          tipo_notificacion: 'nueva_reserva',
+        },
+      });
+    } catch (error) {
+      console.error("Error al crear notificación al propietario:", error);
+      throw error;  // Vuelve a lanzar el error para manejarlo en el controlador principal
+    }
 
     if (res && typeof res.status === 'function') {
       return res.status(201).json({ success: true, data: nuevaReserva });

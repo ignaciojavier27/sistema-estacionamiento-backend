@@ -11,9 +11,9 @@ const router = express.Router();
 
 router.post('/reserva', crearReserva);
 
-router.patch('/:reserva_id', actualizarEstadoReserva);
+router.patch('/reserva/:reserva_id', actualizarEstadoReserva);
 
-router.get('/reserva/propietario/:usuario_id', listarReservasUsuario);
+router.get('/reserva/usuario/:usuario_id', listarReservasUsuario);
 
 router.get('/reserva/propietario/:propietario_id', listarReservasPropietario);
 
