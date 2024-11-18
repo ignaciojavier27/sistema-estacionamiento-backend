@@ -14,19 +14,16 @@ const Reserva = sequelize.define('Reserva', {
       key: 'usuario_id',
     },
   },
-  espacio_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Espacio',
-      key: 'espacio_id',
-    },
-  },
   fecha_reserva: {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
   hora_inicio: {
     type: DataTypes.TIME,
+    allowNull: false,
+  },
+  patente: {
+    type: DataTypes.STRING(15),
     allowNull: false,
   },
   estado: {

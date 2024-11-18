@@ -4,24 +4,20 @@ import { crearNotificacionPropietario } from './notificacionesController.js';
 
 export const crearReserva = async (req, res) => {
   try {
-    const { usuario_id, espacio_id, fecha_reserva, hora_inicio, propietario_id } = req.body;
+    const { usuario_id, fecha_reserva, hora_inicio, propietario_id, patente } = req.body;
 
-    // Validar que el espacio está disponible
-    const espacio = await Espacio.findByPk(espacio_id);
-    if (!espacio || espacio.estado !== 0) {
-      return res.status(400).json({ success: false, message: 'El espacio no está disponible.' });
+    if (!patente || patente.trim() === '') {
+      return res.status(400).json({ success: false, message: 'La patente del vehículo es requerida.' });
     }
 
-    // Crear reserva
     const nuevaReserva = await Reserva.create({
       usuario_id,
-      espacio_id,
       fecha_reserva,
       hora_inicio,
+      patente,
       propietario_id,
     });
 
-    // Generar notificación para el propietario
     await crearNotificacionPropietario({
       body: {
         propietario_id,
