@@ -21,18 +21,16 @@ const NotificacionPropietario = sequelize.define('NotificacionPropietario', {
     allowNull: false,
   },
   tipo_notificacion: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(100),
     allowNull: false,
   },
   estado: {
-    type: DataTypes.ENUM('leído', 'no leído'),
-    defaultValue: 'no leído',
+    type: DataTypes.ENUM('leido', 'no leido'),
+    defaultValue: 'no leido',
   },
 }, {
   tableName: 'NotificacionPropietario',
-  timestamps: true,
-  createdAt: 'fecha_envio',
-  updatedAt: false,
+  timestamps: false
 });
 
 Usuario.hasMany(NotificacionPropietario, { foreignKey: 'propietario_id' });
