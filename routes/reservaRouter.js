@@ -9,14 +9,14 @@ import {
 
 const router = express.Router();
 
-router.post('/', crearReserva);
+router.post('/reserva', crearReserva);
 
 router.patch('/:reserva_id', actualizarEstadoReserva);
 
-router.get('/usuario/:usuario_id', listarReservasUsuario);
+router.get('/reserva/propietario/:usuario_id', listarReservasUsuario);
 
-router.get('/propietario/:propietario_id', listarReservasPropietario);
+router.get('/reserva/propietario/:propietario_id', listarReservasPropietario);
 
-router.delete('/:reserva_id', eliminarReserva);
+router.delete('/reserva/:reserva_id', eliminarReserva);
 
 export default router;

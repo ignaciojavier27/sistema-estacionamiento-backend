@@ -9,6 +9,7 @@ import authRoutes from './routes/authRouter.js';
 import espacioRoutes from './routes/espacioRouter.js';
 import ingresoVehiculoRoutes from './routes/ingresoVehiculoRouter.js';
 import salidaVehiculoRoutes from './routes/salidaVehiculoRouter.js';
+import reservaRoutes from './routes/reservaRouter.js';
 
 
 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', espacioRoutes);
 app.use('/api', ingresoVehiculoRoutes)
 app.use('/api', salidaVehiculoRoutes)
+app.use('api', reservaRoutes)
 
 
 app.listen(port, () => {
