@@ -5,7 +5,7 @@ import {
   listarReservasUsuario,
   listarReservasPropietario,
   eliminarReserva,
-} from '../controllers/reservasController.js';
+} from '../controllers/reservaController.js';
 
 const router = express.Router();
 
