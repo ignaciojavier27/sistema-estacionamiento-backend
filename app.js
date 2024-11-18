@@ -30,7 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', espacioRoutes);
 app.use('/api', ingresoVehiculoRoutes)
 app.use('/api', salidaVehiculoRoutes)
-app.use('api', reservaRoutes)
+app.use('/api', reservaRoutes)
 
 
 app.listen(port, () => {
