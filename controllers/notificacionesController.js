@@ -1,5 +1,5 @@
-import NotificacionPropietario from "../models/NotificacionPropietario";
-import NotificacionUsuario from "../models/NotificacionUsuario";
+import NotificacionPropietario from "../models/NotificacionPropietario.js";
+import NotificacionUsuario from "../models/NotificacionUsuario.js";
 
 export const crearNotificacionUsuario = async (req, res) => {
     try {
