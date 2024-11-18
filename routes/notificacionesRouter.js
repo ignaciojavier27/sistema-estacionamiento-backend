@@ -9,12 +9,12 @@ import {
 
 const router = express.Router();
 
-router.post('/usuarios', crearNotificacionUsuario);
-router.get('/usuarios/:usuario_id', obtenerNotificacionesUsuario);
+router.post('/notificacion/usuarios', crearNotificacionUsuario);
+router.get('/notificacion/usuarios/:usuario_id', obtenerNotificacionesUsuario);
 
-router.post('/propietarios', crearNotificacionPropietario);
-router.get('/propietarios/:propietario_id', obtenerNotificacionesPropietario);
+router.post('/notificacion/propietarios', crearNotificacionPropietario);
+router.get('/notificacion/propietarios/:propietario_id', obtenerNotificacionesPropietario);
 
-router.patch('/:tipo/:id', marcarNotificacionLeida);
+router.patch('/notificacion/:tipo/:id', marcarNotificacionLeida);
 
 export default router;

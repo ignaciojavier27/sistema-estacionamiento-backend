@@ -28,8 +28,14 @@ export const crearReserva = async (req, res) => {
       },
     });
 
-    res.status(201).json({ success: true, data: nuevaReserva });
+    if (res && typeof res.status === 'function') {
+      return res.status(201).json({ success: true, data: nuevaReserva });
+    } else {
+      console.error("Error: La respuesta 'res' no está definida.");
+      throw new Error("Error con la respuesta.");
+    }
   } catch (error) {
+    console.log(error)
     res.status(500).json({ success: false, error: error.message });
   }
 };
