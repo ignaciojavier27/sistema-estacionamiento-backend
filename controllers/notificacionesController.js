@@ -53,8 +53,7 @@ export const obtenerNotificacionesPropietario = async (req, res) => {
       const { propietario_id } = req.params;
   
       const notificaciones = await NotificacionPropietario.findAll({
-        where: { propietario_id },
-        order: [['fecha_envio', 'DESC']],
+        where: { propietario_id }
       });
   
       res.status(200).json({ success: true, data: notificaciones });
