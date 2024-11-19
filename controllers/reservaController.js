@@ -9,7 +9,6 @@ export const crearReserva = async (req, res) => {
       return res.status(400).json({ success: false, message: 'La patente del vehículo es requerida.' });
     }
 
-    // Crear la nueva reserva
     const nuevaReserva = await Reserva.create({
       usuario_id,
       fecha_reserva,
@@ -18,30 +17,32 @@ export const crearReserva = async (req, res) => {
       propietario_id,
     });
 
-    // Crear la notificación al propietario
     try {
-      await crearNotificacionPropietario({
+      const notificacion = await crearNotificacionPropietario({
         propietario_id,
         mensaje: `Nueva reserva recibida para el día ${fecha_reserva}.`,
         tipo_notificacion: 'nueva_reserva',
+        reserva_id: nuevaReserva.reserva_id,
       });
+
+      console.log("Notificación creada:", notificacion);
+
     } catch (error) {
-      console.error("Error al crear la notificación:", error);
+
+      console.error("Error al crear la notificación al propietario:", error);
+
       return res.status(201).json({
-        success: true,
         data: nuevaReserva,
         warning: "Reserva creada, pero no se pudo notificar al propietario.",
       });
     }
 
-    // Responder éxito
-    return res.status(201).json({ success: true, data: nuevaReserva });
+    return res.status(201).json({ nuevaReserva });
   } catch (error) {
-    console.error("Error en crearReserva:", error);
-    return res.status(500).json({ success: false, error: error.message });
+    console.log("Error al crear reserva:", error);
+    res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 export const actualizarEstadoReserva = async (req, res) => {
   try {
