@@ -43,7 +43,7 @@ export const obtenerNotificacionesUsuario = async (req, res) => {
         order: [['fecha_envio', 'DESC']],
       });
   
-      res.status(200).json({ success: true, data: notificaciones });
+      res.status(200).json({ notificaciones });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }
@@ -58,7 +58,7 @@ export const obtenerNotificacionesPropietario = async (req, res) => {
         where: { propietario_id }
       });
   
-      res.status(200).json({ success: true, data: notificaciones });
+      res.status(200).json({ notificaciones });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }
@@ -76,10 +76,10 @@ export const marcarNotificacionLeida = async (req, res) => {
         return res.status(404).json({ success: false, message: 'Notificación no encontrada' });
       }
   
-      notificacion.estado = 'leído';
+      notificacion.estado = 'leido';
       await notificacion.save();
   
-      res.status(200).json({ success: true, data: notificacion });
+      res.status(200).json({ notificacion });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }

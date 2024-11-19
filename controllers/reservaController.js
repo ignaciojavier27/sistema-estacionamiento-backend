@@ -64,16 +64,24 @@ export const actualizarEstadoReserva = async (req, res) => {
     reserva.estado = estado;
     await reserva.save();
 
-    // Crear notificación para el usuario
-    await crearNotificacionUsuario({
-      body: {
+    // Crear notificación para el usuario asociada a la reserva
+    try {
+      await crearNotificacionUsuario({
         usuario_id: reserva.usuario_id,
         mensaje: `Tu reserva para el día ${reserva.fecha_reserva} ha sido ${estado}.`,
         tipo_notificacion: 'estado_reserva',
-      },
-    });
+        reserva_id: reserva_id, // Asociar notificación con la reserva
+      });
+    } catch (error) {
+      console.error("Error al crear la notificación para el usuario:", error);
+      return res.status(200).json({
+        success: true,
+        data: reserva,
+        warning: "Estado actualizado, pero no se pudo notificar al usuario.",
+      });
+    }
 
-    res.status(200).json({ success: true, data: reserva });
+    res.status(200).json({ reserva });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -85,9 +93,10 @@ export const listarReservasUsuario = async (req, res) => {
 
     const reservas = await Reserva.findAll({
       where: { usuario_id },
+      include: [{ model: NotificacionUsuario }], // Incluir notificaciones relacionadas
     });
 
-    res.status(200).json({ success: true, data: reservas });
+    res.status(200).json({ reservas });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -99,9 +108,10 @@ export const listarReservasPropietario = async (req, res) => {
 
     const reservas = await Reserva.findAll({
       where: { propietario_id },
+      include: [{ model: NotificacionPropietario }], // Incluir notificaciones relacionadas
     });
 
-    res.status(200).json({ success: true, data: reservas });
+    res.status(200).json({ reservas });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -116,6 +126,11 @@ export const eliminarReserva = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Reserva no encontrada.' });
     }
 
+    // Eliminar notificaciones asociadas a la reserva
+    await NotificacionUsuario.destroy({ where: { reserva_id } });
+    await NotificacionPropietario.destroy({ where: { reserva_id } });
+
+    // Eliminar la reserva
     await reserva.destroy();
 
     res.status(200).json({ success: true, message: 'Reserva eliminada correctamente.' });
