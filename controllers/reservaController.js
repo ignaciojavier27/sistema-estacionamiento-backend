@@ -1,5 +1,7 @@
 import Reserva from '../models/Reserva.js';
+import NotificacionUsuario from '../models/NotificacionUsuario.js';
 import { crearNotificacionPropietario, crearNotificacionUsuario } from './notificacionesController.js';
+import NotificacionPropietario from '../models/NotificacionPropietario.js';
 
 export const crearReserva = async (req, res) => {
   try {
