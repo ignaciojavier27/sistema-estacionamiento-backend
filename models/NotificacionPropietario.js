@@ -46,6 +46,7 @@ Usuario.hasMany(NotificacionPropietario, { foreignKey: 'propietario_id' });
 NotificacionPropietario.belongsTo(Usuario, { foreignKey: 'propietario_id' });
 
 Reserva.hasMany(NotificacionPropietario, { foreignKey: 'reserva_id' });
-NotificacionPropietario.belongsTo(Reserva, { foreignKey: 'reserva_id' }); 
+NotificacionPropietario.belongsTo(Reserva, { foreignKey: 'reserva_id', as: 'reserva' });
+
 
 export default NotificacionPropietario;

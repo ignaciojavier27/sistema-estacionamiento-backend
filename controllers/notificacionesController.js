@@ -51,17 +51,25 @@ export const obtenerNotificacionesUsuario = async (req, res) => {
 
 
 export const obtenerNotificacionesPropietario = async (req, res) => {
-    try {
-      const { propietario_id } = req.params;
-  
-      const notificaciones = await NotificacionPropietario.findAll({
-        where: { propietario_id }
-      });
-  
-      res.status(200).json({ notificaciones });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
+  try {
+    const { propietario_id } = req.params;
+
+    const notificaciones = await NotificacionPropietario.findAll({
+      where: { propietario_id },
+      include: [
+        {
+          model: Reserva,
+          as: 'reserva',
+          attributes: ['fecha_reserva', 'hora_inicio', 'patente'],
+        },
+      ],
+    });
+
+    res.status(200).json({ notificaciones });
+  } catch (error) {
+    console.error("Error al obtener las notificaciones:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
 
 export const marcarNotificacionLeida = async (req, res) => {
