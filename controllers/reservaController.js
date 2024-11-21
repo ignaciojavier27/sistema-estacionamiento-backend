@@ -18,14 +18,24 @@ export const crearReserva = async (req, res) => {
     });
 
     try {
-      const notificacion = await crearNotificacionPropietario({
+      const notificacionPropietario = await crearNotificacionPropietario({
         propietario_id,
         mensaje: `Nueva reserva recibida para el día ${fecha_reserva}.`,
         tipo_notificacion: 'nueva_reserva',
         reserva_id: nuevaReserva.reserva_id,
       });
 
-      console.log("Notificación creada:", notificacion);
+      const notificacionUsuario = await crearNotificacionUsuario({
+        usuario_id,
+        mensaje: `Reserva A CONFIRMAR para el día ${fecha_reserva}.`,
+        tipo_notificacion: 'nueva_reserva',
+        reserva_id: nuevaReserva.reserva_id,
+      });
+
+      console.log("Notificación Propietario creada:", notificacionPropietario);
+      console.log("Notificación Usuario creada:", notificacionUsuario);
+
+
 
     } catch (error) {
 
@@ -93,7 +103,7 @@ export const listarReservasUsuario = async (req, res) => {
 
     const reservas = await Reserva.findAll({
       where: { usuario_id },
-      include: [{ model: NotificacionUsuario }], // Incluir notificaciones relacionadas
+      include: [{ model: NotificacionUsuario }],
     });
 
     res.status(200).json({ reservas });
@@ -108,7 +118,7 @@ export const listarReservasPropietario = async (req, res) => {
 
     const reservas = await Reserva.findAll({
       where: { propietario_id },
-      include: [{ model: NotificacionPropietario }], // Incluir notificaciones relacionadas
+      include: [{ model: NotificacionPropietario }],
     });
 
     res.status(200).json({ reservas });

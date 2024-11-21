@@ -36,18 +36,27 @@ export const crearNotificacionPropietario = async ({ propietario_id, mensaje, ti
 
 
 export const obtenerNotificacionesUsuario = async (req, res) => {
-    try {
-      const { usuario_id } = req.params;
-  
-      const notificaciones = await NotificacionUsuario.findAll({
-        where: { usuario_id },
-        order: [['fecha_envio', 'DESC']],
-      });
-  
-      res.status(200).json({ notificaciones });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
+
+  try {
+    const { usuario_id } = req.params;
+
+    const notificaciones = await NotificacionUsuario.findAll({
+      where: { usuario_id },
+      include: [
+        {
+          model: Reserva,
+          as: 'reserva',
+          attributes: ['fecha_reserva', 'hora_inicio', 'patente'],
+        },
+      ],
+    });
+
+    res.status(200).json({ notificaciones });
+  } catch (error) {
+    console.error("Error al obtener las notificaciones:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+
 };
 
 
