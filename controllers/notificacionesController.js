@@ -1,5 +1,6 @@
 import NotificacionPropietario from "../models/NotificacionPropietario.js";
 import NotificacionUsuario from "../models/NotificacionUsuario.js";
+import Reserva from "../models/Reserva.js";
 
 export const crearNotificacionUsuario = async ({ usuario_id, mensaje, tipo_notificacion, reserva_id }) => {
     try {  
