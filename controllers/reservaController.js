@@ -61,41 +61,37 @@ export const actualizarEstadoReserva = async (req, res) => {
     const { reserva_id } = req.params;
     const { estado } = req.body; // Estado puede ser 'aceptada', 'rechazada', o 'cancelada'
 
-    // Validar estado
-    if (!['aceptada', 'rechazada', 'cancelada'].includes(estado)) {
-      return res.status(400).json({ success: false, message: 'Estado inválido.' });
+    // Validar el estado recibido
+    const estadosValidos = ['aceptada', 'rechazada', 'cancelada'];
+    if (!estadosValidos.includes(estado)) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Estado inválido. Estados permitidos: ' + estadosValidos.join(', ') });
     }
 
-    // Buscar reserva
+    // Buscar la reserva en la base de datos
     const reserva = await Reserva.findByPk(reserva_id);
     if (!reserva) {
       return res.status(404).json({ success: false, message: 'Reserva no encontrada.' });
     }
 
-    // Actualizar estado
+    // Actualizar el estado de la reserva
     reserva.estado = estado;
     await reserva.save();
 
-    // Crear notificación para el usuario asociada a la reserva
-    try {
-      await crearNotificacionUsuario({
-        usuario_id: reserva.usuario_id,
-        mensaje: `Tu reserva para el día ${reserva.fecha_reserva} ha sido ${estado}.`,
-        tipo_notificacion: 'estado_reserva',
-        reserva_id: reserva_id, // Asociar notificación con la reserva
-      });
-    } catch (error) {
-      console.error("Error al crear la notificación para el usuario:", error);
-      return res.status(200).json({
-        success: true,
-        data: reserva,
-        warning: "Estado actualizado, pero no se pudo notificar al usuario.",
-      });
-    }
+    // Crear la notificación asociada para el usuario
+    await crearNotificacionUsuario({
+      usuario_id: reserva.usuario_id,
+      mensaje: `Tu reserva para el día ${reserva.fecha_reserva} ha sido ${estado}.`,
+      tipo_notificacion: 'estado_reserva',
+      reserva_id: reserva_id,
+    });
 
-    res.status(200).json({ reserva });
+    // Respuesta exitosa
+    res.status(200).json({ success: true, reserva });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error("Error al actualizar la reserva:", error);
+    res.status(500).json({ success: false, message: 'Error interno del servidor.', error: error.message });
   }
 };
 
