@@ -105,8 +105,8 @@ export const marcarNotificacionLeida = async (req, res) => {
 
 export const eliminarNotificacionUsuario = async ( req, res ) => {
   try {
-    const { id } = req.params;
-    const notificacion = await NotificacionUsuario.findByPk(id);
+    const { notificacion_id } = req.params;
+    const notificacion = await NotificacionUsuario.findByPk(notificacion_id);
     if (!notificacion) {
       return res.status(404).json({ success: false, message: 'Notificación no encontrada' });
     }
@@ -121,8 +121,8 @@ export const eliminarNotificacionUsuario = async ( req, res ) => {
 
 export const eliminarNotificacionPropietario = async ( req, res ) => {
   try {
-    const { id } = req.params;
-    const notificacion = await NotificacionPropietario.findByPk(id);
+    const { notificacion_id } = req.params;
+    const notificacion = await NotificacionPropietario.findByPk(notificacion_id);
     if (!notificacion) {
       return res.status(404).json({ success: false, message: 'Notificación no encontrada' });
     }
