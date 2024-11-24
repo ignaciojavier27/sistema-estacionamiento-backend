@@ -102,3 +102,35 @@ export const marcarNotificacionLeida = async (req, res) => {
       res.status(500).json({ success: false, error: error.message });
     }
 };
+
+export const eliminarNotificacionUsuario = async ( req, res ) => {
+  try {
+    const { id } = req.params;
+    const notificacion = await NotificacionUsuario.findByPk(id);
+    if (!notificacion) {
+      return res.status(404).json({ success: false, message: 'Notificación no encontrada' });
+    }
+
+    await notificacion.destroy();
+    res.status(200).json({ success: true, message: 'Notificación eliminada correctamente' });
+
+  }catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export const eliminarNotificacionPropietario = async ( req, res ) => {
+  try {
+    const { id } = req.params;
+    const notificacion = await NotificacionPropietario.findByPk(id);
+    if (!notificacion) {
+      return res.status(404).json({ success: false, message: 'Notificación no encontrada' });
+    }
+
+    await notificacion.destroy();
+    res.status(200).json({ success: true, message: 'Notificación eliminada correctamente' });
+    
+  }catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
