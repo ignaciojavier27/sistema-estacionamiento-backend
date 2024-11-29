@@ -80,3 +80,16 @@ export const obtenerSalidasVehiculosPorEstacionamiento = async (req, res) => {
   }
 };
 
+export const eliminarSalida = async (req, res) => {
+  try {
+    const { salida_id } = req.params;
+    const salida = await SalidaVehiculo.findByPk(salida_id);
+    if (!salida) {
+      return res.status(404).json({ message: 'Salida no encontrada' });
+    }
+    await salida.destroy();
+    res.status(200).json({ message: 'Salida eliminada correctamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar la salida', error: error.message });
+  }
+};
